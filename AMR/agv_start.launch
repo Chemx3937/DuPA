@@ -1,0 +1,22 @@
+<launch>
+    <!-- myagv_odometry 노드를 위한 설정 -->
+    <node pkg="myagv_odometry" type="myagv_odometry_node" name="myagv_odometry_node_1" output="screen" />
+    <param name="robot_description" textfile="$(find myagv_urdf)/urdf/myAGV.urdf"/> 
+
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+    <node pkg="myagv_odometry" type="lidar_open.py" name="lidar_open_node" output="screen" />
+    <node pkg="myagv_odometry" type="servo_lock.py" name="servo_lock_node" output="screen" />
+
+    <include file="$(find ydlidar_ros_driver)/launch/X2.launch" />
+
+    <node pkg="usb_cam" type="usb_cam_node" name="usb_cam_node" output="screen">
+        <param name="video_device" value="/dev/video0"/>
+        <param name="image_width" value="320"/>
+        <param name="image_height" value="240"/>
+        <param name="pixel_format" value="yuyv"/>
+        <param name="framerate" value="30"/>
+    </node>
+
+</launch>
